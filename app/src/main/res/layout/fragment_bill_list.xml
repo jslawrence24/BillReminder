@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rvBillList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp"
+    android:paddingTop="8dp"
+    app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+    app:spanCount="2"
+    tools:context=".BillListFragment"
+    tools:listitem="@layout/bill_card">
+
+
+</android.support.v7.widget.RecyclerView>
