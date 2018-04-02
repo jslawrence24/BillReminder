@@ -8,13 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import edu.weber.jeremylawrence.billreminder.Model.Bill;
 
 public class MainActivity extends AppCompatActivity
 {
+    private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
 
     @Override
@@ -38,7 +43,17 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // Set up recycler view to push data into
-        Bill bill = new Bill("Discover Card", "4/18/2018", "0", "$120");
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
     }
 }
