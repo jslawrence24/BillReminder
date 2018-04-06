@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "602307897799",
+    "firebase_url": "https://billreminder-3f8b9.firebaseio.com",
+    "project_id": "billreminder-3f8b9",
+    "storage_bucket": "billreminder-3f8b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602307897799:android:65bd50cef4cb86dd",
+        "android_client_info": {
+          "package_name": "edu.weber.jeremylawrence.billreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602307897799-opnvd0vomdssd01v5b990f57s6blb5u0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.weber.jeremylawrence.billreminder",
+            "certificate_hash": "21de649efb876e94410bc248fd3d197f59dfe8b6"
+          }
+        },
+        {
+          "client_id": "602307897799-qqa5et7iueibcir1hlcnph3hilnea545.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF6_1b6wvG9JpYZYx9AZ3ztc3zXsHYxY8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602307897799-qqa5et7iueibcir1hlcnph3hilnea545.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
