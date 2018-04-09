@@ -4,6 +4,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,17 +14,25 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
 
+import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
+import edu.weber.jeremylawrence.billreminder.model.Bill;
+
 public class MainActivity extends AppCompatActivity
+        implements BillListRecyclerAdapter.OnBillClickedListener
 {
     private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-    String[] userName;
+    private String[] userName;
+    private DatabaseReference mDatabase;
+    int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,7 +43,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fragmentManager = getSupportFragmentManager();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mAuth = FirebaseAuth.getInstance();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -42,11 +53,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(MainActivity.this, "Add new bill, coming soon!", Toast.LENGTH_LONG).show();
+                counter++;
+                String billName = "Bill " + counter;
+                Bill bill = new Bill(billName, "Date", "length", "$$$");
+                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
+//                Toast.makeText(MainActivity.this, "Add new bill, coming soon!", Toast.LENGTH_LONG).show();
             }
         });
-
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -105,5 +118,12 @@ public class MainActivity extends AppCompatActivity
 
             setTitle(userFirstName + "'s Bills");
         }
+    }
+
+    @Override
+    public void onBillClicked(Bill bill)
+    {
+        //TODO BILL CLICKED EVENT
+        Toast.makeText(this, "You clicked a bill!", Toast.LENGTH_LONG).show();
     }
 }

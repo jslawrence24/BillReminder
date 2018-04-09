@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_logout"
+        android:key="@+id/action_logout"
         android:title="@string/sign_out"
         app:showAsAction="never" />
 </menu>

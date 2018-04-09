@@ -2,7 +2,7 @@ package edu.weber.jeremylawrence.billreminder.model;
 
 public class Bill
 {
-    private int id;
+    private String key;
     private String name;
     private String due_date;
     private String duration;
@@ -18,14 +18,14 @@ public class Bill
         this.amount = amount;
     }
 
-    public int getId()
+    public String getKey()
     {
-        return id;
+        return key;
     }
 
-    public void setId(int id)
+    public void setKey(String key)
     {
-        this.id = id;
+        this.key = key;
     }
 
     public String getName()
