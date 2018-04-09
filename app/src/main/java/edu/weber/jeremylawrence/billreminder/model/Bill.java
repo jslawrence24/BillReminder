@@ -1,7 +1,4 @@
-package edu.weber.jeremylawrence.billreminder.Model;
-
-import java.math.BigDecimal;
-import java.util.Date;
+package edu.weber.jeremylawrence.billreminder.model;
 
 public class Bill
 {
@@ -10,6 +7,8 @@ public class Bill
     private String due_date;
     private String duration;
     private String amount;
+
+    public Bill(){}
 
     public Bill(String name, String due_date, String duration, String amount)
     {
@@ -67,5 +66,11 @@ public class Bill
     public void setAmount(String amount)
     {
         this.amount = amount;
+    }
+
+    public String getDaysToDue()
+    {
+        //TODO CALCULATE DAYS UNTIL DUE
+        return "XX";
     }
 }
