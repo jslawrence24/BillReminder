@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -97,6 +96,8 @@ public class MainActivity extends AppCompatActivity
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
+
+            //TODO GET SIGN IN RESULT, APP DOESN'T EXIT IF USER BACKS OUT OF LOGIN
         } else {
             this.currentUser = currentUser;
             userName = this.currentUser.getDisplayName().split(" ");
