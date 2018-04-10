@@ -7,6 +7,7 @@ public class Bill
     private String due_date;
     private String duration;
     private String amount;
+    private String daysToDue;
 
     public Bill(){}
 
@@ -71,6 +72,10 @@ public class Bill
     public String getDaysToDue()
     {
         //TODO CALCULATE DAYS UNTIL DUE
-        return "XX";
+        return daysToDue;
+    }
+
+    public void setDaysToDue(String daysToDue){
+        this.daysToDue = daysToDue;
     }
 }

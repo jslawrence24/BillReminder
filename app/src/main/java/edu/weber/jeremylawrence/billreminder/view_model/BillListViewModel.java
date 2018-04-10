@@ -1,3 +1,4 @@
+/*
 package edu.weber.jeremylawrence.billreminder.view_model;
 
 import android.arch.lifecycle.LiveData;
@@ -70,3 +71,4 @@ public class BillListViewModel extends ViewModel
         return bills;
     }
 }
+*/

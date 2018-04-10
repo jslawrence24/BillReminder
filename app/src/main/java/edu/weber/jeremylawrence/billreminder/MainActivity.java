@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         mAuth = FirebaseAuth.getInstance();
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -53,11 +52,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                counter++;
-                String billName = "Bill " + counter;
-                Bill bill = new Bill(billName, "Date", "length", "$$$");
-                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
-//                Toast.makeText(MainActivity.this, "Add new bill, coming soon!", Toast.LENGTH_LONG).show();
+//                counter++;
+//                String billName = "Bill " + counter;
+//                Bill bill = new Bill(billName, "Date", "length", "$$$");
+//                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
+                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
+//                mDatabase.push().setValue(bill);
             }
         });
     }
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity
                 mAuth.signOut();
                 currentUser = null;
                 updateUI(currentUser);
+                BillListFragment billListFragment = new BillListFragment();
+                billListFragment.clearList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp"
+    android:orientation="vertical"
+    android:background="@color/fragmentBackgroundLight"
+    tools:context=".AddNewBillFragment">
+
+    <EditText
+        android:id="@+id/edtBillName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Bill Name"
+        android:inputType="textCapSentences|textAutoCorrect|textAutoComplete" />
+
+    <EditText
+        android:id="@+id/edtDaysToDue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Days Until Due"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Amount (optional)"
+        android:inputType="numberDecimal" />
+</LinearLayout>
