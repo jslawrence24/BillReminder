@@ -75,6 +75,12 @@ public class Bill
         return daysToDue;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
     public void setDaysToDue(String daysToDue){
         this.daysToDue = daysToDue;
     }

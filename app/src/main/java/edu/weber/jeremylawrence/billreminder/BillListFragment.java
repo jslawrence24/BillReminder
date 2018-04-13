@@ -1,28 +1,27 @@
 package edu.weber.jeremylawrence.billreminder;
 
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
 import edu.weber.jeremylawrence.billreminder.model.Bill;
-import edu.weber.jeremylawrence.billreminder.view_model.BillListViewModel;
 
 
 /**
@@ -30,18 +29,48 @@ import edu.weber.jeremylawrence.billreminder.view_model.BillListViewModel;
  */
 public class BillListFragment extends Fragment
 {
+    public static final String TAG = "BillListFrag";
     private View root;
     private RecyclerView rvBillList;
     private BillListRecyclerAdapter adapter;
     private DatabaseReference mDatabase;
     private List<Bill> allBills;
+    private FirebaseUser currentUser;
+    private OnBillListReady mCallback;
 
+    private ValueEventListener billValueListener = new ValueEventListener()
+    {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) { getAllBills(dataSnapshot); }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) { }
+    };
+
+
+
+
+    public interface OnBillListReady
+    {
+        public FirebaseUser getCurrentUser();
+    }
 
     public BillListFragment()
     {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        try{
+            mCallback = (OnBillListReady)activity;
+        } catch (ClassCastException e){
+            throw new ClassCastException(activity.toString() + " must implement OnBillListReady");
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,56 +80,81 @@ public class BillListFragment extends Fragment
         root = inflater.inflate(R.layout.fragment_bill_list, container, false);
 
         allBills = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         rvBillList = (RecyclerView) root.findViewById(R.id.rvBillList);
 
         adapter = new BillListRecyclerAdapter(new ArrayList<Bill>(),
-                (BillListRecyclerAdapter.OnBillClickedListener)getActivity());
+                (BillListRecyclerAdapter.OnBillClickedListener) getActivity());
 
         rvBillList.setAdapter(adapter);
         rvBillList.setHasFixedSize(true);
 
-        mDatabase.addChildEventListener(new ChildEventListener()
-        {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s)
-            {
-                getAllBills(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s)
-            {
-                getAllBills(dataSnapshot);
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot)
-            {
-                deleteBill(dataSnapshot);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s)
-            {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError)
-            {
-            }
-        });
-
-
+//        mDatabase.addChildEventListener(new ChildEventListener()
+//        {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s)
+//            {
+//                getAllBills(dataSnapshot);
+//            }
 //
-//        BillListViewModel billListViewModel = new BillListViewModel();
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s)
+//            {
+//                getAllBills(dataSnapshot);
+//            }
 //
-////        adapter.setBillList(billListViewModel.getBills());
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot)
+//            {
+//                deleteBill(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s)
+//            {
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError)
+//            {
+//            }
+//        });
+
 
         return root;
     }
 
-    private void getAllBills(DataSnapshot dataSnapshot)
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        currentUser = mCallback.getCurrentUser();
+         setListener(currentUser);
+
+    }
+
+    public void setListener(FirebaseUser currentUser)
+    {
+        if (currentUser != null){
+            mDatabase = FirebaseDatabase.getInstance().getReference(currentUser.getUid());
+
+            mDatabase.addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    getAllBills(dataSnapshot);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+
+                }
+            });
+        }
+    }
+
+    public void getAllBills(DataSnapshot dataSnapshot)
     {
         allBills.clear();
         for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
@@ -129,5 +183,11 @@ public class BillListFragment extends Fragment
     public void clearList()
     {
         adapter.setBillList(new ArrayList<Bill>());
+        adapter.notifyDataSetChanged();
+    }
+
+    public int getBillCount()
+    {
+        return adapter.getItemCount();
     }
 }

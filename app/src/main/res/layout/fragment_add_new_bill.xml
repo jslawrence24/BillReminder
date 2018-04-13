@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:padding="4dp"
     android:orientation="vertical"
-    android:background="@color/fragmentBackgroundLight"
     tools:context=".AddNewBillFragment">
 
     <EditText
@@ -17,12 +16,19 @@
         android:inputType="textCapSentences|textAutoCorrect|textAutoComplete" />
 
     <EditText
+        android:id="@+id/edtDueDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" />
+
+    <!--<EditText
         android:id="@+id/edtDaysToDue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Days Until Due"
-        android:inputType="text" />
+        android:inputType="text" />-->
 
     <EditText
         android:id="@+id/editText3"

@@ -1,10 +1,10 @@
 package edu.weber.jeremylawrence.billreminder;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -19,12 +21,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
 import edu.weber.jeremylawrence.billreminder.model.Bill;
 
 public class MainActivity extends AppCompatActivity
-        implements BillListRecyclerAdapter.OnBillClickedListener
+        implements BillListRecyclerAdapter.OnBillClickedListener,
+                   BillListFragment.OnBillListReady,
+                   SignInFragment.OnSignInClickedListener
 {
     private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
@@ -32,7 +37,9 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser currentUser;
     private String[] userName;
     private DatabaseReference mDatabase;
-    int counter;
+    private BillListFragment billListFragment;
+    int billNum;
+    private boolean backOut = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,8 +50,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fragmentManager = getSupportFragmentManager();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        billListFragment = (BillListFragment) fragmentManager.findFragmentById(R.id.billListFrag);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener()
@@ -52,11 +60,20 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-//                counter++;
-//                String billName = "Bill " + counter;
-//                Bill bill = new Bill(billName, "Date", "length", "$$$");
-//                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
-                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
+                billNum = billListFragment.getBillCount() + 1;
+                String billName = userName[0] + " Bill " + billNum;
+                Bill bill;
+                if (new Random().nextInt(2) == 0) {
+                    bill = new Bill(billName, "Date", "length",
+                            "$" + String.valueOf(new Random().nextInt(200) + 25));
+                } else {
+                    bill = new Bill(billName, "Date", "length", null);
+                }
+
+                bill.setDaysToDue(String.valueOf(new Random().nextInt(29) + 4));
+
+                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
+//                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
 //                mDatabase.push().setValue(bill);
             }
         });
@@ -75,11 +92,20 @@ public class MainActivity extends AppCompatActivity
     {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                mAuth.signOut();
-                currentUser = null;
-                updateUI(currentUser);
-                BillListFragment billListFragment = new BillListFragment();
-                billListFragment.clearList();
+                AuthUI.getInstance()
+                        .signOut(this).addOnCompleteListener(new OnCompleteListener<Void>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
+                    {
+                        currentUser = null;
+                        if(billListFragment != null) {
+                            billListFragment.clearList();
+                        }
+                        updateUI(currentUser);
+
+                    }
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -87,32 +113,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart()
+    protected void onResume()
     {
-        super.onStart();
+        super.onResume();
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUI(currentUser); //fm get frag??
+
     }
 
     private void updateUI(FirebaseUser currentUser)
     {
         if (currentUser == null) {
-            setTitle("Bill Reminder");
-            // Choose authentication providers
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build());
-
-            // Create and launch sign-in intent
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
-
-            //TODO GET SIGN IN RESULT, APP DOESN'T EXIT IF USER BACKS OUT OF LOGIN
+            SignInFragment signInFragment = new SignInFragment();
+            fragmentManager.beginTransaction()
+                    .add(android.R.id.content, signInFragment)
+                    .commit();
         } else {
             this.currentUser = currentUser;
             userName = this.currentUser.getDisplayName().split(" ");
@@ -122,10 +138,39 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void signIn()
+    {
+        setTitle("Bill Reminder");
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
     @Override
     public void onBillClicked(Bill bill)
     {
         //TODO BILL CLICKED EVENT
-        Toast.makeText(this, "You clicked a bill!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "You clicked " + bill.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public FirebaseUser getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    @Override
+    public void OnSignInClicked()
+    {
+        signIn();
     }
 }
