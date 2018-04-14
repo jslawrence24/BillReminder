@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E7E7E7"
+    android:background="@color/fragmentBackgroundLight"
     tools:context="edu.weber.jeremylawrence.billreminder.MainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -29,11 +30,11 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <fragment
-            android:id="@+id/fragment"
-            android:name="edu.weber.jeremylawrence.billreminder.BillListFragment"
+            android:id="@+id/billListFrag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_bill_list" />
+            android:name="edu.weber.jeremylawrence.billreminder.BillListFragment"
+            tools:layout="@layout/fragment_bill_list"/>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton

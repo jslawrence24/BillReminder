@@ -1,15 +1,15 @@
-package edu.weber.jeremylawrence.billreminder.Model;
-
-import java.math.BigDecimal;
-import java.util.Date;
+package edu.weber.jeremylawrence.billreminder.model;
 
 public class Bill
 {
-    private int id;
+    private String key;
     private String name;
     private String due_date;
     private String duration;
     private String amount;
+    private String daysToDue;
+
+    public Bill(){}
 
     public Bill(String name, String due_date, String duration, String amount)
     {
@@ -19,14 +19,14 @@ public class Bill
         this.amount = amount;
     }
 
-    public int getId()
+    public String getKey()
     {
-        return id;
+        return key;
     }
 
-    public void setId(int id)
+    public void setKey(String key)
     {
-        this.id = id;
+        this.key = key;
     }
 
     public String getName()
@@ -67,5 +67,21 @@ public class Bill
     public void setAmount(String amount)
     {
         this.amount = amount;
+    }
+
+    public String getDaysToDue()
+    {
+        //TODO CALCULATE DAYS UNTIL DUE
+        return daysToDue;
+    }
+
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
+    public void setDaysToDue(String daysToDue){
+        this.daysToDue = daysToDue;
     }
 }
