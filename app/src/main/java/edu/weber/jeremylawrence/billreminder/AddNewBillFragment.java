@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -98,37 +99,7 @@ public class AddNewBillFragment extends DialogFragment
             String dueDate = edtDueDate.getText().toString();
             String amount = edtAmount.getText().toString();
 
-
-            //TODO PUT ALL THIS INSIDE THE BILL MODEL, GET RID OF DAYS TO TO FIELD AND MAKE IT A METHOD THAT MUST BE CALLED IN THE ADAPTER TO GET ACCURATE VALE IN REAL TIME
-            String[] sDate = dueDate.split("/");
-
-            int year = Integer.parseInt(sDate[2]);
-            int month = Integer.parseInt(sDate[0]) - 1;
-            int day = Integer.parseInt(sDate[1]);
-
-            Calendar calendar = Calendar.getInstance();
-            Calendar now = Calendar.getInstance();
-            calendar.set(year, month, day);
-//            now.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE));
-
-            Date date = now.getTime();
-            Date date2 = calendar.getTime();
-
-            long mi1liDD = calendar.getTimeInMillis();
-            long milliNow = now.getTimeInMillis();
-
-            long milliDiff = mi1liDD - milliNow;
-
-            long days = (milliDiff / (1000 * 60 * 60 * 24)) + 1;
-
-//            int daysToDue = (int)((Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis()) / (24*60*60*1000));
-
-            if (days > 2){
-                System.out.print(days);
-            }
-
-            Bill bill = new Bill(billName, dueDate, "", amount);
-            bill.setDaysToDue(String.valueOf(days));
+            Bill bill = new Bill(billName, dueDate, amount);
 
             mCallback.onSaveClicked(bill);
 

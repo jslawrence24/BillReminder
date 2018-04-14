@@ -1,5 +1,11 @@
 package edu.weber.jeremylawrence.billreminder.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class Bill
 {
     private String key;
@@ -7,16 +13,17 @@ public class Bill
     private String due_date;
     private String duration;
     private String amount;
-    private String daysToDue;
+    private int daysToDue;
 
     public Bill(){}
 
-    public Bill(String name, String due_date, String duration, String amount)
+    public Bill(String name, String due_date, String amount)
     {
         this.name = name;
         this.due_date = due_date;
-        this.duration = duration;
-        this.amount = amount;
+//        this.duration = duration;
+        if (!amount.equals(""))
+            this.amount = amount;
     }
 
     public String getKey()
@@ -69,11 +76,27 @@ public class Bill
         this.amount = amount;
     }
 
-    public String getDaysToDue()
+    public int getDaysToDue()
     {
-        //TODO CALCULATE DAYS UNTIL DUE
-        return daysToDue;
+        Date dateDue, dateToday;
+        long diff;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        int days = 0;
+
+        String strToday = sdf.format(new Date());
+
+        try {
+            dateDue = sdf.parse(due_date);
+            dateToday = sdf.parse(strToday);
+            diff = dateDue.getTime() - dateToday.getTime();
+            days = (int)TimeUnit.DAYS.convert(diff , TimeUnit.MILLISECONDS);
+
+        } catch (ParseException e) {}
+        return days;
     }
+
+    public void setDaysToDue(int days){}
 
     @Override
     public String toString()
@@ -81,7 +104,5 @@ public class Bill
         return getName();
     }
 
-    public void setDaysToDue(String daysToDue){
-        this.daysToDue = daysToDue;
-    }
+
 }
