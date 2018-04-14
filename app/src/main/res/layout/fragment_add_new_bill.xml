@@ -68,6 +68,12 @@
                     android:inputType="date" />
 
             </android.support.design.widget.TextInputLayout>
+            <!--TODO MAKE THIS PRETTY-->
+            <Button
+                android:id="@+id/btnDatePick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="pick date" />
 
             <LinearLayout
                 android:layout_width="match_parent"
