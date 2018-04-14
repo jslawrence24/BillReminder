@@ -29,7 +29,8 @@ import edu.weber.jeremylawrence.billreminder.model.Bill;
 public class MainActivity extends AppCompatActivity
         implements BillListRecyclerAdapter.OnBillClickedListener,
                    BillListFragment.OnBillListReady,
-                   SignInFragment.OnSignInClickedListener
+                   SignInFragment.OnSignInClickedListener,
+                   AddNewBillFragment.OnSaveClickedListener
 {
     private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
@@ -60,23 +61,35 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                billNum = billListFragment.getBillCount() + 1;
-                String billName = userName[0] + " Bill " + billNum;
-                Bill bill;
-                if (new Random().nextInt(2) == 0) {
-                    bill = new Bill(billName, "Date", "length",
-                            "$" + String.valueOf(new Random().nextInt(200) + 25));
-                } else {
-                    bill = new Bill(billName, "Date", "length", null);
-                }
+                addBill();
 
-                bill.setDaysToDue(String.valueOf(new Random().nextInt(29) + 4));
+//                billNum = billListFragment.getBillCount() + 1;
+//                String billName = userName[0] + " Bill " + billNum;
+//                Bill bill;
+//                if (new Random().nextInt(2) == 0) {
+//                    bill = new Bill(billName, "Date", "length",
+//                            "$" + String.valueOf(new Random().nextInt(200) + 25));
+//                } else {
+//                    bill = new Bill(billName, "Date", "length", null);
+//                }
+//
+//                bill.setDaysToDue(String.valueOf(new Random().nextInt(29) + 4));
+//
+//                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
 
-                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
 //                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
 //                mDatabase.push().setValue(bill);
             }
         });
+    }
+
+    private void addBill()
+    {
+        AddNewBillFragment addNewBillFragment = new AddNewBillFragment();
+        fragmentManager.beginTransaction()
+                .add(android.R.id.content, addNewBillFragment)
+                .addToBackStack("addNew")
+                .commit();
     }
 
     @Override
@@ -158,8 +171,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBillClicked(Bill bill)
     {
-        //TODO BILL CLICKED EVENT
-        Toast.makeText(this, "You clicked " + bill.toString(), Toast.LENGTH_SHORT).show();
+        //TODO OO BIL CLICKED VIEW DETAILS
     }
 
     @Override
@@ -172,5 +184,11 @@ public class MainActivity extends AppCompatActivity
     public void OnSignInClicked()
     {
         signIn();
+    }
+
+    @Override
+    public void onSaveClicked(Bill bill)
+    {
+        mDatabase.child(currentUser.getUid()).child(bill.toString()).setValue(bill);
     }
 }
