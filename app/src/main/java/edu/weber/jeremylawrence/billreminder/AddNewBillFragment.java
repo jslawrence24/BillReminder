@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 
 /**
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 public class AddNewBillFragment extends DialogFragment
 {
     private static final String TAG = "AddNewBillFrg";
+    private View rootView;
 
 
     public AddNewBillFragment()
@@ -28,7 +30,12 @@ public class AddNewBillFragment extends DialogFragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_new_bill, container, false);
+        rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
+
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar);
+        toolbar.setTitle("Add New Bill");
+
+        return  rootView;
     }
 
 }
