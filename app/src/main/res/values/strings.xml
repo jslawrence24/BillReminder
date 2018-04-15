@@ -10,4 +10,7 @@
     <string name="amount_optional">Amount (optional)</string>
     <string name="date">Date</string>
     <string name="bill_name">Bill Name</string>
+    <string name="title">Title</string>
+    <string name="due_on">Due on</string>
+    <string name="recurrence">Recurrence</string>
 </resources>

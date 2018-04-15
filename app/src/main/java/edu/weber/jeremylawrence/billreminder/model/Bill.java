@@ -2,7 +2,6 @@ package edu.weber.jeremylawrence.billreminder.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -11,7 +10,7 @@ public class Bill
     private String key;
     private String name;
     private String due_date;
-    private String duration;
+    private int recurrences;
     private String amount;
     private int daysToDue;
 
@@ -21,7 +20,7 @@ public class Bill
     {
         this.name = name;
         this.due_date = due_date;
-//        this.duration = duration;
+//        this.recurrences = recurrences;
         if (!amount.equals(""))
             this.amount = amount;
     }
@@ -56,14 +55,14 @@ public class Bill
         this.due_date = due_date;
     }
 
-    public String getDuration()
+    public int getRecurrences()
     {
-        return duration;
+        return recurrences;
     }
 
-    public void setDuration(String duration)
+    public void setRecurrences(int recurrences)
     {
-        this.duration = duration;
+        this.recurrences = recurrences;
     }
 
     public String getAmount()

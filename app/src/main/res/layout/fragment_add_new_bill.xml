@@ -35,14 +35,6 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-            <!--<EditText
-                android:id="@+id/edtDaysToDue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Days Until Due"
-                android:inputType="text" />-->
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -57,6 +49,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/txiDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -65,16 +58,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/date"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:focusableInTouchMode="false"/>
 
             </android.support.design.widget.TextInputLayout>
-            <!--TODO MAKE THIS PRETTY-->
-            <Button
-                android:id="@+id/btnDatePick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="pick date" />
-
+            
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

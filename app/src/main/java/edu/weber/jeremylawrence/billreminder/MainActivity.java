@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -171,7 +172,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBillClicked(Bill bill)
     {
-        //TODO OO BIL CLICKED VIEW DETAILS
+        //TODO Display ViewBillDetailsFragment
+        ViewBillDetailsFragment viewBillDetailsFragment = new ViewBillDetailsFragment();
+        fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                .add(android.R.id.content, viewBillDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

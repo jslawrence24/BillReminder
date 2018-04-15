@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -85,9 +87,20 @@ public class AddNewBillFragment extends DialogFragment
         edtDueDate  = rootView.findViewById(R.id.edtDate);
         edtAmount   = rootView.findViewById(R.id.edtAmount);
 
-        Button btnDatePick = rootView.findViewById(R.id.btnDatePick);
+//        Button btnDatePick = rootView.findViewById(R.id.btnDatePick);
+//
+//        btnDatePick.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v)
+//            {
+//                showDatePickerDialog(v);
+//            }
+//        });
 
-        btnDatePick.setOnClickListener(new View.OnClickListener()
+        TextInputEditText edtDate = rootView.findViewById(R.id.edtDate);
+
+        edtDate.setOnClickListener(new TextInputLayout.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -139,12 +152,6 @@ public class AddNewBillFragment extends DialogFragment
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
-
-    public static void setEdtDueDate(String dueDate)
-    {
-
-    }
-
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
