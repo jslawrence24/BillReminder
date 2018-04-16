@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 
 import edu.weber.jeremylawrence.billreminder.model.Bill;
+import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 
 /**
@@ -34,8 +35,6 @@ import edu.weber.jeremylawrence.billreminder.model.Bill;
 public class ViewBillDetailsFragment extends DialogFragment
 {
     private static final String TAG = "ViewBillDetailsFrag";
-    private OnViewBillDetailsListener mCallback;
-    private Bill bill;
     private Toolbar toolbar;
     private FloatingActionButton fabedit;
     private TextView txvDate, txvRepeat, txvAmount, txvNotification;
@@ -43,28 +42,10 @@ public class ViewBillDetailsFragment extends DialogFragment
     private View rootView;
 
 
-    public interface OnViewBillDetailsListener
-    {
-        public Bill getBillDetails();
-//        public void onEditBillClicked(Bill bill);
-//        public void onDeleteBillClicked(Bill bill);
-    }
-
 
     public ViewBillDetailsFragment()
     {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        try {
-            mCallback = (OnViewBillDetailsListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnViewBillDetailsListener");
-        }
     }
 
     @Override
@@ -111,15 +92,12 @@ public class ViewBillDetailsFragment extends DialogFragment
     public void onResume()
     {
         super.onResume();
-
-        if (bill == null) {
-            setFields(mCallback.getBillDetails());
-        }
+        setFields();
     }
 
-    private void setFields(Bill bill)
+    private void setFields()
     {
-        this.bill = bill;
+        Bill bill = SelectedBill.bill;
         toolbar.setTitle(bill.toString());
         txvDate.setText(dateFormat.format(bill.getDue_date()));
         txvRepeat.setText("Repeats Monthly (Sample)");      //TODO vIEW DETAILS REPEAT
@@ -159,7 +137,7 @@ public class ViewBillDetailsFragment extends DialogFragment
 
         switch (id){
             case R.id.action_delete:
-                Toast.makeText(getActivity(), "Cannot delete " + bill.toString() + ", under maintenance",
+                Toast.makeText(getActivity(), "Delete is under maintenance",
                         Toast.LENGTH_SHORT).show();
                 dismiss();
                 getFragmentManager().popBackStack();

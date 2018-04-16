@@ -23,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.weber.jeremylawrence.billreminder.ViewBillDetailsFragment.OnViewBillDetailsListener;
 import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
 import edu.weber.jeremylawrence.billreminder.model.Bill;
 import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity
                    BillListFragment.OnBillListReady,
                    SignInFragment.OnSignInClickedListener,
                    AddNewBillFragment.OnSaveClickedListener,
-                   OnViewBillDetailsListener,
                    EditBillFragment.OnEditSaveClickedListener
 {
     private static final int RC_SIGN_IN = 123;
@@ -65,23 +63,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 addBill();
-
-//                billNum = billListFragment.getBillCount() + 1;
-//                String billName = userName[0] + " Bill " + billNum;
-//                Bill bill;
-//                if (new Random().nextInt(2) == 0) {
-//                    bill = new Bill(billName, "Date", "length",
-//                            "$" + String.valueOf(new Random().nextInt(200) + 25));
-//                } else {
-//                    bill = new Bill(billName, "Date", "length", null);
-//                }
-//
-//                bill.setDaysToDue(String.valueOf(new Random().nextInt(29) + 4));
-//
-//                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
-
-//                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
-//                mDatabase.push().setValue(bill);
             }
         });
     }
@@ -200,12 +181,6 @@ public class MainActivity extends AppCompatActivity
     public void onSaveClicked(Bill bill)
     {
         mDatabase.child(currentUser.getUid()).child(bill.toString()).setValue(bill);
-    }
-
-    @Override
-    public Bill getBillDetails()
-    {
-        return SelectedBill.bill;
     }
 
     @Override
