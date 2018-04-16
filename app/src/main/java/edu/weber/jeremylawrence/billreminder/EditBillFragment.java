@@ -9,8 +9,6 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +27,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import edu.weber.jeremylawrence.billreminder.model.Bill;
+import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 
 /**
@@ -39,12 +38,10 @@ public class EditBillFragment extends DialogFragment
     private static final String TAG = "EditBillFrag";
     private View rootView;
     private EditText edtBillName;
-//    private static EditText edtDueDate;
     private static TextInputEditText edtDate;
     private EditText edtAmount;
     private static Date dueDate;
     private OnEditSaveClickedListener mCallback;
-    private Bill bill;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",
                                                                         Locale.getDefault());
@@ -53,7 +50,6 @@ public class EditBillFragment extends DialogFragment
     public interface OnEditSaveClickedListener
     {
         void onEditSaveClicked(Bill bill);
-        Bill onEditReady();
     }
 
 
@@ -122,12 +118,16 @@ public class EditBillFragment extends DialogFragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
+        Bill bill = SelectedBill.bill;
 
         if (id == R.id.action_save) {
             String billName = edtBillName.getText().toString();
             String amount = edtAmount.getText().toString();
 
-            Bill bill = new Bill(billName, dueDate, amount);
+            // Update bill
+            bill.setName(billName);
+            bill.setAmount(amount);
+            bill.setDue_date(dueDate);
 
             mCallback.onEditSaveClicked(bill);
 
@@ -136,13 +136,6 @@ public class EditBillFragment extends DialogFragment
             return true;
 
         } else if (id == android.R.id.home) {
-//            ViewBillDetailsFragment viewBillDetailsFragment = new ViewBillDetailsFragment();
-//            getFragmentManager().beginTransaction()
-//                    .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
-//                    .replace(android.R.id.content, viewBillDetailsFragment)
-//                    .addToBackStack(null)
-//                    .commit();
-            //TODO when backing out view detils has incorect info
             dismiss();
             getFragmentManager().popBackStack();
 
@@ -156,13 +149,12 @@ public class EditBillFragment extends DialogFragment
     public void onResume()
     {
         super.onResume();
-        if (bill == null)
-            setFields(mCallback.onEditReady());
+            setFields();
     }
 
-    private void setFields(Bill bill)
+    private void setFields()
     {
-        this.bill = bill;
+        Bill bill = SelectedBill.bill;
         toolbar.setTitle("Edit " + bill.toString());
 
         edtBillName.setText(bill.toString());

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,40 +36,10 @@ public class BillListFragment extends Fragment
     private DatabaseReference mDatabase;
     private List<Bill> allBills;
     private FirebaseUser currentUser;
-    private OnBillListReady mCallback;
-
-    private ValueEventListener billValueListener = new ValueEventListener()
-    {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) { getAllBills(dataSnapshot); }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) { }
-    };
-
-
-
-
-    public interface OnBillListReady
-    {
-        public FirebaseUser getCurrentUser();
-    }
 
     public BillListFragment()
     {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        try{
-            mCallback = (OnBillListReady)activity;
-        } catch (ClassCastException e){
-            throw new ClassCastException(activity.toString() + " must implement OnBillListReady");
-        }
-
     }
 
     @Override
@@ -81,7 +52,7 @@ public class BillListFragment extends Fragment
         rvBillList = root.findViewById(R.id.rvBillList);
 
         adapter = new BillListRecyclerAdapter(new ArrayList<Bill>(),
-                (BillListRecyclerAdapter.OnBillClickedListener)getActivity());
+                (BillListRecyclerAdapter.OnBillClickedListener) getActivity());
 
         rvBillList.setAdapter(adapter);
         rvBillList.setHasFixedSize(true);
@@ -95,14 +66,14 @@ public class BillListFragment extends Fragment
     public void onResume()
     {
         super.onResume();
-        currentUser = mCallback.getCurrentUser();
-         setListener(currentUser);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        setListener(currentUser);
 
     }
 
     public void setListener(FirebaseUser currentUser)
     {
-        if (currentUser != null){
+        if (currentUser != null) {
             mDatabase = FirebaseDatabase.getInstance().getReference(currentUser.getUid());
 
             mDatabase.addValueEventListener(new ValueEventListener()

@@ -1,14 +1,12 @@
 package edu.weber.jeremylawrence.billreminder;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import edu.weber.jeremylawrence.billreminder.model.Bill;
 import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
@@ -36,12 +35,10 @@ public class ViewBillDetailsFragment extends DialogFragment
 {
     private static final String TAG = "ViewBillDetailsFrag";
     private Toolbar toolbar;
-    private FloatingActionButton fabedit;
+    private FloatingActionButton fabEdit;
     private TextView txvDate, txvRepeat, txvAmount, txvNotification;
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd", Locale.getDefault());
     private View rootView;
-
-
 
     public ViewBillDetailsFragment()
     {
@@ -62,8 +59,8 @@ public class ViewBillDetailsFragment extends DialogFragment
         txvAmount = rootView.findViewById(R.id.txv_details_amount);
         txvNotification = rootView.findViewById(R.id.txv_details_notification);
 
-        fabedit = rootView.findViewById(R.id.fabEdit);
-        fabedit.setOnClickListener(new View.OnClickListener()
+        fabEdit = rootView.findViewById(R.id.fabEdit);
+        fabEdit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)

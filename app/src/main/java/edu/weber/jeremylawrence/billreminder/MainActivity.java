@@ -29,7 +29,6 @@ import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 public class MainActivity extends AppCompatActivity
         implements BillListRecyclerAdapter.OnBillClickedListener,
-                   BillListFragment.OnBillListReady,
                    SignInFragment.OnSignInClickedListener,
                    AddNewBillFragment.OnSaveClickedListener,
                    EditBillFragment.OnEditSaveClickedListener
@@ -166,12 +165,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public FirebaseUser getCurrentUser()
-    {
-        return currentUser;
-    }
-
-    @Override
     public void OnSignInClicked()
     {
         signIn();
@@ -188,11 +181,5 @@ public class MainActivity extends AppCompatActivity
     {
         Toast.makeText(this, "Cannot update " + bill.toString() + ", Edit under maintenance",
                 Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public Bill onEditReady()
-    {
-        return SelectedBill.bill;
     }
 }
