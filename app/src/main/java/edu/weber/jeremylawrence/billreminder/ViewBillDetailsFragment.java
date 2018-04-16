@@ -1,20 +1,31 @@
 package edu.weber.jeremylawrence.billreminder;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+
+import edu.weber.jeremylawrence.billreminder.model.Bill;
 
 
 /**
@@ -23,6 +34,21 @@ import android.view.Window;
 public class ViewBillDetailsFragment extends DialogFragment
 {
     private static final String TAG = "ViewBillDetailsFrag";
+    private OnViewBillDetailsListener mCallback;
+    private Bill bill;
+    private Toolbar toolbar;
+    private FloatingActionButton fabedit;
+    private TextView txvDate, txvRepeat, txvAmount, txvNotification;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd");
+    private View rootView;
+
+
+    public interface OnViewBillDetailsListener
+    {
+        public Bill getBillDetails();
+//        public void onEditBillClicked(Bill bill);
+//        public void onDeleteBillClicked(Bill bill);
+    }
 
 
     public ViewBillDetailsFragment()
@@ -30,16 +56,44 @@ public class ViewBillDetailsFragment extends DialogFragment
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        try {
+            mCallback = (OnViewBillDetailsListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnViewBillDetailsListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_view_bill_details, container, false);
+        rootView = inflater.inflate(R.layout.fragment_view_bill_details, container, false);
 
-        Toolbar toolbar = rootView.findViewById(R.id.toolbarDetails);
-        toolbar.setTitle("Bill Details");
+        toolbar = rootView.findViewById(R.id.toolbarDetails);
+
+        txvDate = rootView.findViewById(R.id.txv_details_date);
+        txvRepeat = rootView.findViewById(R.id.txv_details_repeat);
+        txvAmount = rootView.findViewById(R.id.txv_details_amount);
+        txvNotification = rootView.findViewById(R.id.txv_details_notification);
+
+        fabedit = rootView.findViewById(R.id.fabEdit);
+        fabedit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditBillFragment editBillFragment = new EditBillFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, editBillFragment)
+                        .addToBackStack("editBill")
+                        .commit();
+            }
+        });
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -51,6 +105,35 @@ public class ViewBillDetailsFragment extends DialogFragment
         setHasOptionsMenu(true);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        if (bill == null) {
+            setFields(mCallback.getBillDetails());
+        }
+    }
+
+    private void setFields(Bill bill)
+    {
+        this.bill = bill;
+        toolbar.setTitle(bill.toString());
+        txvDate.setText(dateFormat.format(bill.getDue_date()));
+        txvRepeat.setText("Repeats Monthly (Sample)");      //TODO vIEW DETAILS REPEAT
+
+        LinearLayout amntLayout = rootView.findViewById(R.id.layout_detils_amount);
+
+        String amnt = bill.getAmount();
+        if (amnt == null) {
+            amntLayout.setVisibility(LinearLayout.GONE);
+        } else {
+            txvAmount.setText(bill.getAmount());
+        }
+
+        txvNotification.setText("1 Week Before (Sample)");      //TODO VIEW DETAILS NOTIFICATION
     }
 
     @NonNull
@@ -69,4 +152,24 @@ public class ViewBillDetailsFragment extends DialogFragment
         getActivity().getMenuInflater().inflate(R.menu.menu_view_bill_details, menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_delete:
+                Toast.makeText(getActivity(), "Cannot delete " + bill.toString() + ", under maintenance",
+                        Toast.LENGTH_SHORT).show();
+                dismiss();
+                getFragmentManager().popBackStack();
+                return true;
+            case android.R.id.home:
+                dismiss();
+                getFragmentManager().popBackStack();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

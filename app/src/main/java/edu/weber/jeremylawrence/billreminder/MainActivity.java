@@ -22,16 +22,19 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
+import edu.weber.jeremylawrence.billreminder.ViewBillDetailsFragment.OnViewBillDetailsListener;
 import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
 import edu.weber.jeremylawrence.billreminder.model.Bill;
+import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 public class MainActivity extends AppCompatActivity
         implements BillListRecyclerAdapter.OnBillClickedListener,
                    BillListFragment.OnBillListReady,
                    SignInFragment.OnSignInClickedListener,
-                   AddNewBillFragment.OnSaveClickedListener
+                   AddNewBillFragment.OnSaveClickedListener,
+                   OnViewBillDetailsListener,
+                   EditBillFragment.OnEditSaveClickedListener
 {
     private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
@@ -40,8 +43,7 @@ public class MainActivity extends AppCompatActivity
     private String[] userName;
     private DatabaseReference mDatabase;
     private BillListFragment billListFragment;
-    int billNum;
-    private boolean backOut = false;
+    private Bill bill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -172,7 +174,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBillClicked(Bill bill)
     {
-        //TODO Display ViewBillDetailsFragment
+        SelectedBill.bill = bill;
+
         ViewBillDetailsFragment viewBillDetailsFragment = new ViewBillDetailsFragment();
         fragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
@@ -197,5 +200,24 @@ public class MainActivity extends AppCompatActivity
     public void onSaveClicked(Bill bill)
     {
         mDatabase.child(currentUser.getUid()).child(bill.toString()).setValue(bill);
+    }
+
+    @Override
+    public Bill getBillDetails()
+    {
+        return SelectedBill.bill;
+    }
+
+    @Override
+    public void onEditSaveClicked(Bill bill)
+    {
+        Toast.makeText(this, "Cannot update " + bill.toString() + ", Edit under maintenance",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Bill onEditReady()
+    {
+        return SelectedBill.bill;
     }
 }

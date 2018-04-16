@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,46 +78,15 @@ public class BillListFragment extends Fragment
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_bill_list, container, false);
 
-        allBills = new ArrayList<>();
-        rvBillList = (RecyclerView) root.findViewById(R.id.rvBillList);
+        rvBillList = root.findViewById(R.id.rvBillList);
 
         adapter = new BillListRecyclerAdapter(new ArrayList<Bill>(),
-                (BillListRecyclerAdapter.OnBillClickedListener) getActivity());
+                (BillListRecyclerAdapter.OnBillClickedListener)getActivity());
 
         rvBillList.setAdapter(adapter);
         rvBillList.setHasFixedSize(true);
 
-//        mDatabase.addChildEventListener(new ChildEventListener()
-//        {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s)
-//            {
-//                getAllBills(dataSnapshot);
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s)
-//            {
-//                getAllBills(dataSnapshot);
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot)
-//            {
-//                deleteBill(dataSnapshot);
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s)
-//            {
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError)
-//            {
-//            }
-//        });
-
+        allBills = new ArrayList<>();
 
         return root;
     }
@@ -159,6 +127,7 @@ public class BillListFragment extends Fragment
         allBills.clear();
         for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
             Bill bill = singleSnapshot.getValue(Bill.class);
+            bill.setKey(dataSnapshot.getKey());
             allBills.add(bill);
         }
 //            adapter = new BillListRecyclerAdapter(allBills,

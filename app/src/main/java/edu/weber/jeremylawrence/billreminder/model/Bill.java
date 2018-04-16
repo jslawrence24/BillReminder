@@ -9,14 +9,16 @@ public class Bill
 {
     private String key;
     private String name;
-    private String due_date;
+    private Date due_date;
     private int recurrences;
     private String amount;
     private int daysToDue;
 
-    public Bill(){}
+    public Bill()
+    {
+    }
 
-    public Bill(String name, String due_date, String amount)
+    public Bill(String name, Date due_date, String amount)
     {
         this.name = name;
         this.due_date = due_date;
@@ -45,12 +47,12 @@ public class Bill
         this.name = name;
     }
 
-    public String getDue_date()
+    public Date getDue_date()
     {
         return due_date;
     }
 
-    public void setDue_date(String due_date)
+    public void setDue_date(Date due_date)
     {
         this.due_date = due_date;
     }
@@ -77,7 +79,7 @@ public class Bill
 
     public int getDaysToDue()
     {
-        Date dateDue, dateToday;
+        Date dateToday;
         long diff;
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -86,16 +88,19 @@ public class Bill
         String strToday = sdf.format(new Date());
 
         try {
-            dateDue = sdf.parse(due_date);
+//            dateDue = sdf.parse(due_date);
             dateToday = sdf.parse(strToday);
-            diff = dateDue.getTime() - dateToday.getTime();
-            days = (int)TimeUnit.DAYS.convert(diff , TimeUnit.MILLISECONDS);
+            diff = due_date.getTime() - dateToday.getTime();
+            days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        } catch (ParseException e) {}
+        } catch (Exception e) {
+        }
         return days;
     }
 
-    public void setDaysToDue(int days){}
+    public void setDaysToDue(int days)
+    {
+    }
 
     @Override
     public String toString()

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fitsSystemWindows="true"
     android:name="edu.weber.jeremylawrence.billreminder.AddNewBillFragment"
     tools:context="edu.weber.jeremylawrence.billreminder.AddNewBillFragment">
 
@@ -15,7 +14,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarAdd"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@android:color/transparent"
