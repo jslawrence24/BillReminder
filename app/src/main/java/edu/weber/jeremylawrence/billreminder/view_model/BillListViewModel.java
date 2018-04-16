@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,11 +24,10 @@ public class BillListViewModel extends ViewModel
     private DatabaseReference mDatabase;
     private List<Bill> bills;
 
-    public List<Bill> getBills()
+    public List<Bill> getBills(FirebaseUser user)
     {
-        if (bills == null){
-            mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        if (bills == null) {
+            mDatabase = FirebaseDatabase.getInstance().getReference(user.getUid());
 
 
             ChildEventListener childEventListener = new ChildEventListener()
@@ -36,8 +36,10 @@ public class BillListViewModel extends ViewModel
                 public void onChildAdded(DataSnapshot dataSnapshot, String s)
                 {
                     Bill bill = dataSnapshot.getValue(Bill.class);
-                    bill.setKey(dataSnapshot.getKey());
-                    bills.add(bill);
+                    if (bill != null) {
+                        bill.setKey(dataSnapshot.getKey());
+                        bills.add(bill);
+                    }
                 }
 
                 @Override

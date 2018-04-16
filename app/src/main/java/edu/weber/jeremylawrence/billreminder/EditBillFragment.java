@@ -18,42 +18,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import edu.weber.jeremylawrence.billreminder.model.Bill;
+import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddNewBillFragment extends DialogFragment
+public class EditBillFragment extends DialogFragment
 {
-    private static final String TAG = "AddNewBillFrg";
+    private static final String TAG = "EditBillFrag";
     private View rootView;
-    private OnSaveClickedListener mCallback;
     private EditText edtBillName;
     private static TextInputEditText edtDate;
     private EditText edtAmount;
     private static Date dueDate;
+    private OnEditSaveClickedListener mCallback;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",
-                                                                        Locale.getDefault());
+            Locale.getDefault());
+    private Toolbar toolbar;
 
-    public interface OnSaveClickedListener
+    public interface OnEditSaveClickedListener
     {
-        public void onSaveClicked(Bill bill);
+        void onEditSaveClicked(Bill bill);
     }
 
 
-    public AddNewBillFragment()
+    public EditBillFragment()
     {
         // Required empty public constructor
     }
@@ -63,10 +65,10 @@ public class AddNewBillFragment extends DialogFragment
     {
         super.onAttach(activity);
         try {
-            mCallback = (OnSaveClickedListener) activity;
+            mCallback = (OnEditSaveClickedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() +
-                    " must implement OnSaveClickedListener");
+                    " must implement OnEditSaveClickedListener");
         }
     }
 
@@ -74,11 +76,10 @@ public class AddNewBillFragment extends DialogFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
 
-        Toolbar toolbar = rootView.findViewById(R.id.toolbarAdd);
-        toolbar.setTitle("Add New Bill");
+        toolbar = rootView.findViewById(R.id.toolbarAdd);
+        toolbar.setTitle("Edit Bill");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -118,32 +119,68 @@ public class AddNewBillFragment extends DialogFragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
+        Bill bill = SelectedBill.bill;
 
         if (id == R.id.action_save) {
             String billName = edtBillName.getText().toString();
             String amount = edtAmount.getText().toString();
 
-            Bill bill = new Bill(billName, dueDate, amount);
+            // Update bill
+            bill.setName(billName);
+            bill.setAmount(amount);
 
-            mCallback.onSaveClicked(bill);
+            if (dueDate != null) {
+                bill.setDue_date(dueDate);
+            } else {
+                try {
+                    Date date = dateFormat.parse(edtDate.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (billName.equals("")) {
+                Toast.makeText(getContext(), "Bill Name Required", Toast.LENGTH_LONG).show();
+            }
+            mCallback.onEditSaveClicked(bill);
 
             dismiss();
             getFragmentManager().popBackStack();
+            return true;
 
         } else if (id == android.R.id.home) {
             dismiss();
             getFragmentManager().popBackStack();
-            return true;
+
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDatePickerDialog(View v)
+    @Override
+    public void onResume()
     {
-        DialogFragment newFragment = new DatePickerFragment();
+        super.onResume();
+        setFields();
+    }
+
+    private void setFields()
+    {
+        Bill bill = SelectedBill.bill;
+        toolbar.setTitle("Edit " + bill.toString());
+
+        edtBillName.setText(bill.toString());
+        edtAmount.setText(bill.getAmount());
+        edtDate.setText(dateFormat.format(bill.getDue_date()));
+    }
+
+    private void showDatePickerDialog(View v)
+    {
+        DialogFragment newFragment = new EditBillFragment.DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
+
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener

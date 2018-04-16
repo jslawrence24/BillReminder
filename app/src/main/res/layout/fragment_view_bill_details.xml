@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?android:attr/colorPrimary"
+            app:expandedTitleGravity="center_horizontal|bottom"
+            app:toolbarId="@+id/toolbarDetails">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbarDetails"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:orientation="vertical">
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/title"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--android:textColor="@color/colorAccent" />-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@color/colorAccent" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textView2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="12dp"-->
+                <!--android:text="Bill Name Here"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/due_on"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--android:textColor="@color/colorAccent" />-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@color/colorAccent" />-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_margin="12dp">
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_access_time_black_24dp" />
+
+                    <Space
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txv_details_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Friday, April 27"
+                            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+                        <TextView
+                            android:id="@+id/txv_details_repeat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Repeats Monthly" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Amount"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--android:textColor="@color/colorAccent" />-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@color/colorAccent" />-->
+
+                <LinearLayout
+                    android:id="@+id/layout_detils_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="12dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_money_black_24dp" />
+
+                    <Space
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/txv_details_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="120"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/recurrence"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--android:textColor="@color/colorAccent" />-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@color/colorAccent" />-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginBottom="12dp"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<View-->
+                        <!--android:layout_width="24dp"-->
+                        <!--android:layout_height="24dp"-->
+                        <!--android:background="@drawable/ic_refresh_black_24dp" />-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/textView7"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginStart="4dp"-->
+                        <!--android:text="5 Times"-->
+                        <!--android:textAppearance="@android:style/TextAppearance.Material.Medium" />-->
+                <!--</LinearLayout>-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Notifications"-->
+                <!--android:textAllCaps="true"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--android:textColor="@color/colorAccent" />-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginTop="4dp"-->
+                <!--android:background="@color/colorAccent" />-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="12dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_notifications_black_24dp" />
+
+                    <Space
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/txv_details_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="1 Week Before"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_edit_white_24dp"
+        app:fabSize="mini"
+        app:layout_anchor="@+id/appbar"
+        app:layout_anchorGravity="left|bottom" />
+</android.support.design.widget.CoordinatorLayout>

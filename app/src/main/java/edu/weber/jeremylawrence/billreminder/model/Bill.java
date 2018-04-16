@@ -1,87 +1,68 @@
 package edu.weber.jeremylawrence.billreminder.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 public class Bill
 {
+    static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
     private String key;
     private String name;
-    private String due_date;
-    private String duration;
+    private Date due_date;
+    private int recurrences;
     private String amount;
-    private String daysToDue;
 
     public Bill(){}
 
-    public Bill(String name, String due_date, String duration, String amount)
+    public Bill(String name, Date due_date, String amount)
     {
-        this.name = name;
+        this.name =  name;
         this.due_date = due_date;
-        this.duration = duration;
-        this.amount = amount;
+        if (!amount.equals(""))
+            this.amount = amount;
     }
 
-    public String getKey()
-    {
-        return key;
-    }
+    public String getKey() { return key; }
 
-    public void setKey(String key)
-    {
-        this.key = key;
-    }
+    public void setKey(String key) { if (this.key == null) this.key = key; }
 
-    public String getName()
-    {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public String getDue_date()
-    {
-        return due_date;
-    }
+    public Date getDue_date() { return due_date; }
 
-    public void setDue_date(String due_date)
-    {
-        this.due_date = due_date;
-    }
+    public void setDue_date(Date due_date) { this.due_date = due_date; }
 
-    public String getDuration()
-    {
-        return duration;
-    }
+    public int getRecurrences() { return recurrences; }
 
-    public void setDuration(String duration)
-    {
-        this.duration = duration;
-    }
+    public void setRecurrences(int recurrences) { this.recurrences = recurrences; }
 
-    public String getAmount()
-    {
-        return amount;
-    }
+    public String getAmount() { return amount; }
 
-    public void setAmount(String amount)
-    {
-        this.amount = amount;
-    }
+    public void setAmount(String amount) { this.amount = (!amount.equals("")) ? amount : null; }
 
-    public String getDaysToDue()
+    public int getDaysToDue()
     {
-        //TODO CALCULATE DAYS UNTIL DUE
-        return daysToDue;
+        Date dateToday;
+        long diff;
+
+        int days = 0;
+
+        String strToday = dateFormat.format(new Date());
+
+        try {
+            dateToday = dateFormat.parse(strToday);
+            diff = due_date.getTime() - dateToday.getTime();
+            days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        } catch (Exception e) {
+        }
+        return days;
     }
 
     @Override
-    public String toString()
-    {
-        return getName();
-    }
-
-    public void setDaysToDue(String daysToDue){
-        this.daysToDue = daysToDue;
-    }
-}
+    public String toString() { return getName(); }
+} // end class

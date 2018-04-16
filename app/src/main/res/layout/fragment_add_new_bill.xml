@@ -1,40 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
-    android:orientation="vertical"
-    tools:context=".AddNewBillFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:name="edu.weber.jeremylawrence.billreminder.AddNewBillFragment"
+    tools:context="edu.weber.jeremylawrence.billreminder.AddNewBillFragment">
 
-    <EditText
-        android:id="@+id/edtBillName"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Bill Name"
-        android:inputType="textCapSentences|textAutoCorrect|textAutoComplete" />
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <EditText
-        android:id="@+id/edtDueDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarAdd"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <!--<EditText
-        android:id="@+id/edtDaysToDue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Days Until Due"
-        android:inputType="text" />-->
+    </android.support.design.widget.AppBarLayout>
 
-    <EditText
-        android:id="@+id/editText3"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Amount (optional)"
-        android:inputType="numberDecimal" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@color/cardview_light_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtBillName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/bill_name"
+                    android:inputType="textCapSentences" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txiDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date"
+                    android:inputType="date"
+                    android:focusableInTouchMode="false"/>
+
+            </android.support.design.widget.TextInputLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:layout_marginRight="-14dp"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="3dp"
+                    android:text="@string/dollar"
+                    android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edtAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/amount_optional"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="16dp" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

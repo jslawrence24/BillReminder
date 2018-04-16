@@ -1,5 +1,7 @@
 package edu.weber.jeremylawrence.billreminder.adapters;
 
+import android.arch.lifecycle.HolderFragment;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,10 +46,34 @@ public class BillListRecyclerAdapter extends RecyclerView.Adapter<BillListRecycl
 
         if (bill != null) {
             holder.txvBillName.setText(bill.getName());
-            holder.txvDaysToDue.setText(bill.getDaysToDue());
+
+            int days = bill.getDaysToDue();
+
+            String strDue, strDtd, strDays;
+
+            if (days > 0){
+                strDue = "Due in ";
+                strDtd = String.valueOf(days);
+                strDays = " days.";
+            } else if (days == 0){
+                strDue = "";
+                strDtd = "AW, SNAP! DUE TODAY!!";
+                strDays = "";
+            } else {
+
+                strDue = "";
+                strDtd = "DUE  " + Math.abs(days) + "  DAYS AGO!!!";
+                strDays = "";
+            }
+
+            holder.txvDue.setText(strDue);
+            holder.txvDaysToDue.setText(strDtd);
+            holder.txvDays.setText(strDays);
+
+
             if (bill.getAmount() != null) {
                 holder.txvBillAmount.setVisibility(View.VISIBLE);
-                holder.txvBillAmount.setText(bill.getAmount());
+                holder.txvBillAmount.setText("$" + bill.getAmount());
             } else {
                 holder.txvBillAmount.setVisibility(View.GONE);
             }
@@ -78,14 +104,17 @@ public class BillListRecyclerAdapter extends RecyclerView.Adapter<BillListRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView txvBillName, txvDaysToDue, txvBillAmount;
+        TextView txvBillName, txvDaysToDue, txvBillAmount,
+                txvDue, txvDays;
         public View view;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             txvBillName = (TextView) itemView.findViewById(R.id.txvBillName);
+            txvDays = (TextView) itemView.findViewById(R.id.txvDays);
             txvDaysToDue = (TextView) itemView.findViewById(R.id.txvDaysToDue);
+            txvDue = (TextView) itemView.findViewById(R.id.txvDue);
             txvBillAmount = (TextView) itemView.findViewById(R.id.txvBillAmount);
             view = itemView;
         }

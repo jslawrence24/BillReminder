@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,15 +22,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import edu.weber.jeremylawrence.billreminder.adapters.BillListRecyclerAdapter;
 import edu.weber.jeremylawrence.billreminder.model.Bill;
+import edu.weber.jeremylawrence.billreminder.model.SelectedBill;
 
 public class MainActivity extends AppCompatActivity
         implements BillListRecyclerAdapter.OnBillClickedListener,
-                   BillListFragment.OnBillListReady,
-                   SignInFragment.OnSignInClickedListener
+                   SignInFragment.OnSignInClickedListener,
+                   AddNewBillFragment.OnSaveClickedListener,
+                   EditBillFragment.OnEditSaveClickedListener
 {
     private static final int RC_SIGN_IN = 123;
     private FragmentManager fragmentManager;
@@ -38,8 +40,7 @@ public class MainActivity extends AppCompatActivity
     private String[] userName;
     private DatabaseReference mDatabase;
     private BillListFragment billListFragment;
-    int billNum;
-    private boolean backOut = false;
+    private Bill bill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,23 +61,18 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                billNum = billListFragment.getBillCount() + 1;
-                String billName = userName[0] + " Bill " + billNum;
-                Bill bill;
-                if (new Random().nextInt(2) == 0) {
-                    bill = new Bill(billName, "Date", "length",
-                            "$" + String.valueOf(new Random().nextInt(200) + 25));
-                } else {
-                    bill = new Bill(billName, "Date", "length", null);
-                }
-
-                bill.setDaysToDue(String.valueOf(new Random().nextInt(29) + 4));
-
-                mDatabase.child(currentUser.getUid()).child(billName).setValue(bill);
-//                Toast.makeText(MainActivity.this, "Feature currently under maintenance", Toast.LENGTH_SHORT).show();
-//                mDatabase.push().setValue(bill);
+                addBill();
             }
         });
+    }
+
+    private void addBill()
+    {
+        AddNewBillFragment addNewBillFragment = new AddNewBillFragment();
+        fragmentManager.beginTransaction()
+                .add(android.R.id.content, addNewBillFragment)
+                .addToBackStack("addNew")
+                .commit();
     }
 
     @Override
@@ -158,19 +154,31 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBillClicked(Bill bill)
     {
-        //TODO BILL CLICKED EVENT
-        Toast.makeText(this, "You clicked " + bill.toString(), Toast.LENGTH_SHORT).show();
-    }
+        SelectedBill.bill = bill;
 
-    @Override
-    public FirebaseUser getCurrentUser()
-    {
-        return currentUser;
+        ViewBillDetailsFragment viewBillDetailsFragment = new ViewBillDetailsFragment();
+        fragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                .add(android.R.id.content, viewBillDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
     public void OnSignInClicked()
     {
         signIn();
+    }
+
+    @Override
+    public void onSaveClicked(Bill bill)
+    {
+        mDatabase.child(currentUser.getUid()).child(bill.toString()).setValue(bill);
+    }
+
+    @Override
+    public void onEditSaveClicked(Bill bill)
+    {
+        mDatabase.child(currentUser.getUid()).child(bill.getKey()).setValue(bill);
     }
 }
