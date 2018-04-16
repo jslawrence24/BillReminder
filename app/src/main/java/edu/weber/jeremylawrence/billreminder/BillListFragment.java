@@ -98,12 +98,9 @@ public class BillListFragment extends Fragment
         allBills.clear();
         for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
             Bill bill = singleSnapshot.getValue(Bill.class);
-            bill.setKey(dataSnapshot.getKey());
+            bill.setKey(singleSnapshot.getKey());
             allBills.add(bill);
         }
-//            adapter = new BillListRecyclerAdapter(allBills,
-//                    (BillListRecyclerAdapter.OnBillClickedListener)getActivity() );
-//            rvBillList.setAdapter(adapter);
         adapter.setBillList(allBills);
     }
 

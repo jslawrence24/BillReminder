@@ -20,7 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,14 +46,13 @@ public class EditBillFragment extends DialogFragment
     private OnEditSaveClickedListener mCallback;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",
-                                                                        Locale.getDefault());
+            Locale.getDefault());
     private Toolbar toolbar;
 
     public interface OnEditSaveClickedListener
     {
         void onEditSaveClicked(Bill bill);
     }
-
 
 
     public EditBillFragment()
@@ -127,8 +128,20 @@ public class EditBillFragment extends DialogFragment
             // Update bill
             bill.setName(billName);
             bill.setAmount(amount);
-            bill.setDue_date(dueDate);
 
+            if (dueDate != null) {
+                bill.setDue_date(dueDate);
+            } else {
+                try {
+                    Date date = dateFormat.parse(edtDate.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (billName.equals("")) {
+                Toast.makeText(getContext(), "Bill Name Required", Toast.LENGTH_LONG).show();
+            }
             mCallback.onEditSaveClicked(bill);
 
             dismiss();
@@ -149,7 +162,7 @@ public class EditBillFragment extends DialogFragment
     public void onResume()
     {
         super.onResume();
-            setFields();
+        setFields();
     }
 
     private void setFields()

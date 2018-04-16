@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onEditSaveClicked(Bill bill)
     {
-        Toast.makeText(this, "Cannot update " + bill.toString() + ", Edit under maintenance",
-                Toast.LENGTH_SHORT).show();
+//        mDatabase.child(currentUser.getUid()).child(bill.toString()).removeValue();
+        mDatabase.child(currentUser.getUid()).child(bill.getKey()).setValue(bill);
     }
 }
