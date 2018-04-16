@@ -21,6 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -39,6 +44,7 @@ public class ViewBillDetailsFragment extends DialogFragment
     private TextView txvDate, txvRepeat, txvAmount, txvNotification;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM dd", Locale.getDefault());
     private View rootView;
+    private Bill bill;
 
     public ViewBillDetailsFragment()
     {
@@ -94,7 +100,7 @@ public class ViewBillDetailsFragment extends DialogFragment
 
     private void setFields()
     {
-        Bill bill = SelectedBill.bill;
+        bill = SelectedBill.bill;
         toolbar.setTitle(bill.toString());
         txvDate.setText(dateFormat.format(bill.getDue_date()));
         txvRepeat.setText("Repeats Monthly (Sample)");      //TODO vIEW DETAILS REPEAT
@@ -134,8 +140,9 @@ public class ViewBillDetailsFragment extends DialogFragment
 
         switch (id){
             case R.id.action_delete:
-                Toast.makeText(getActivity(), "Delete is under maintenance",
-                        Toast.LENGTH_SHORT).show();
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child(currentUser.getUid()).child(bill.getKey()).removeValue();
                 dismiss();
                 getFragmentManager().popBackStack();
                 return true;

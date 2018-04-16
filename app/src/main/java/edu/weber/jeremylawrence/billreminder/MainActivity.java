@@ -179,7 +179,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onEditSaveClicked(Bill bill)
     {
-//        mDatabase.child(currentUser.getUid()).child(bill.toString()).removeValue();
         mDatabase.child(currentUser.getUid()).child(bill.getKey()).setValue(bill);
     }
 }
