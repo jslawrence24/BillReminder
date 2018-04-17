@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -39,11 +40,14 @@ public class EditBillFragment extends DialogFragment
 {
     private static final String TAG = "EditBillFrag";
     private View rootView;
+    private OnEditSaveClickedListener mCallback;
     private EditText edtBillName;
     private static TextInputEditText edtDate;
     private EditText edtAmount;
     private static Date dueDate;
-    private OnEditSaveClickedListener mCallback;
+    private RadioButton rdo_forever, rdo_monthsRepeat;
+    private EditText edtRepeatMonths;
+    private EditText edtDaysBefore;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",
             Locale.getDefault());
@@ -79,7 +83,7 @@ public class EditBillFragment extends DialogFragment
         rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
 
         toolbar = rootView.findViewById(R.id.toolbarAdd);
-        toolbar.setTitle("Edit Bill");
+        toolbar.setTitle("");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -93,9 +97,12 @@ public class EditBillFragment extends DialogFragment
 
         edtBillName = rootView.findViewById(R.id.edtBillName);
         edtAmount = rootView.findViewById(R.id.edtAmount);
+        edtRepeatMonths = rootView.findViewById(R.id.edtRepeatMonths);
+        edtDaysBefore = rootView.findViewById(R.id.edtDaysbefore);
+        rdo_forever = rootView.findViewById(R.id.rdo_forever);
+        rdo_monthsRepeat = rootView.findViewById(R.id.rdo_months);
 
         edtDate = rootView.findViewById(R.id.edtDate);
-
         edtDate.setOnClickListener(new TextInputLayout.OnClickListener()
         {
             @Override
@@ -119,33 +126,12 @@ public class EditBillFragment extends DialogFragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        Bill bill = SelectedBill.bill;
 
         if (id == R.id.action_save) {
-            String billName = edtBillName.getText().toString();
-            String amount = edtAmount.getText().toString();
-
-            // Update bill
-            bill.setName(billName);
-            bill.setAmount(amount);
-
-            if (dueDate != null) {
-                bill.setDue_date(dueDate);
-            } else {
-                try {
-                    Date date = dateFormat.parse(edtDate.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            if (saveBill()) {
+                dismiss();
+                getFragmentManager().popBackStack();
             }
-
-            if (billName.equals("")) {
-                Toast.makeText(getContext(), "Bill Name Required", Toast.LENGTH_LONG).show();
-            }
-            mCallback.onEditSaveClicked(bill);
-
-            dismiss();
-            getFragmentManager().popBackStack();
             return true;
 
         } else if (id == android.R.id.home) {
@@ -158,6 +144,61 @@ public class EditBillFragment extends DialogFragment
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean saveBill()
+    {
+        Bill bill = SelectedBill.bill;
+        String billName = edtBillName.getText().toString();
+        String amount = edtAmount.getText().toString();
+        String repeat = edtRepeatMonths.getText().toString();
+        String notifyDays = edtDaysBefore.getText().toString();
+
+//        if (dueDate == null) {
+//            try {
+//                dueDate = dateFormat.parse(edtDate.getText().toString());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        boolean success = true;
+        String errorMessage = "";
+        // defaults to forever
+        int recurrences = -1;
+
+        //check all required fields are filled
+        if (billName.equals("")) {
+            success = false;
+            errorMessage += " Name";
+        }
+        if (rdo_monthsRepeat.isChecked()){
+            if (repeat.equals("")){
+                success = false;
+                errorMessage += " Repeat";
+            }else{
+                recurrences = Integer.parseInt(repeat);
+            }
+        }
+        if (notifyDays.equals("")){
+            success = false;
+            errorMessage += " Notification";
+        }
+
+        if (success) {
+            // Update bill
+            bill.setName(billName);
+            bill.setDue_date(dueDate);
+            bill.setAmount(amount);
+            bill.setRecurrences(recurrences);
+            bill.setNotifyDaysBefore(Integer.parseInt(notifyDays));
+
+            mCallback.onEditSaveClicked(bill);
+        } else {
+            Toast.makeText(getContext(), errorMessage + " required", Toast.LENGTH_LONG).show();
+        }
+
+        return success;
+    }
+
     @Override
     public void onResume()
     {
@@ -168,11 +209,19 @@ public class EditBillFragment extends DialogFragment
     private void setFields()
     {
         Bill bill = SelectedBill.bill;
-        toolbar.setTitle("Edit " + bill.toString());
 
         edtBillName.setText(bill.toString());
         edtAmount.setText(bill.getAmount());
-        edtDate.setText(dateFormat.format(bill.getDue_date()));
+        dueDate = bill.getDue_date();
+        edtDate.setText(dateFormat.format(dueDate));
+        int repeat = bill.getRecurrences();
+        if (repeat < 0){
+            rdo_forever.setChecked(true);
+        }else {
+            rdo_monthsRepeat.setChecked(true);
+            edtRepeatMonths.setText(String.valueOf(repeat));
+        }
+        edtDaysBefore.setText(String.valueOf(bill.getNotifyDaysBefore()));
     }
 
     private void showDatePickerDialog(View v)

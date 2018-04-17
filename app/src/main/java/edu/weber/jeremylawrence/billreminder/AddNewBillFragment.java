@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +44,9 @@ public class AddNewBillFragment extends DialogFragment
     private static TextInputEditText edtDate;
     private EditText edtAmount;
     private static Date dueDate;
+    private RadioButton rdo_forever, rdo_monthsRepeat;
+    private EditText edtRepeatMonths;
+    private EditText edtDaysBefore;
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy",
                                                                         Locale.getDefault());
@@ -78,7 +82,7 @@ public class AddNewBillFragment extends DialogFragment
         rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
 
         Toolbar toolbar = rootView.findViewById(R.id.toolbarAdd);
-        toolbar.setTitle("Add New Bill");
+        toolbar.setTitle("");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -92,6 +96,10 @@ public class AddNewBillFragment extends DialogFragment
 
         edtBillName = rootView.findViewById(R.id.edtBillName);
         edtAmount = rootView.findViewById(R.id.edtAmount);
+        edtRepeatMonths = rootView.findViewById(R.id.edtRepeatMonths);
+        edtDaysBefore = rootView.findViewById(R.id.edtDaysbefore);
+        rdo_forever = rootView.findViewById(R.id.rdo_forever);
+        rdo_monthsRepeat = rootView.findViewById(R.id.rdo_months);
 
         edtDate = rootView.findViewById(R.id.edtDate);
 
@@ -120,15 +128,11 @@ public class AddNewBillFragment extends DialogFragment
         int id = item.getItemId();
 
         if (id == R.id.action_save) {
-            String billName = edtBillName.getText().toString();
-            String amount = edtAmount.getText().toString();
 
-            Bill bill = new Bill(billName, dueDate, amount);
-
-            mCallback.onSaveClicked(bill);
-
-            dismiss();
-            getFragmentManager().popBackStack();
+            if (saveBill()) {
+                dismiss();
+                getFragmentManager().popBackStack();
+            }
 
         } else if (id == android.R.id.home) {
             dismiss();
@@ -137,6 +141,51 @@ public class AddNewBillFragment extends DialogFragment
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private Boolean saveBill()
+    {
+        String billName = edtBillName.getText().toString();
+        String amount = edtAmount.getText().toString();
+        String repeat = edtRepeatMonths.getText().toString();
+        String notifyDays = edtDaysBefore.getText().toString();
+
+
+
+        boolean success = true;
+        String errorMessage = "";
+        // defaults to forever
+        int recurrences = -1;
+
+        //check all required fields are filled
+        if (billName.equals("")) {
+            success = false;
+            errorMessage += " Name";
+        }
+        if (dueDate == null){
+            success = false;
+            errorMessage += " Due Date";
+        }
+        if (rdo_monthsRepeat.isChecked()){
+            if (repeat.equals("")){
+                success = false;
+                errorMessage += " Repeat";
+            }else{
+                recurrences = Integer.parseInt(repeat);
+            }
+        }
+        if (notifyDays.equals("")){
+            success = false;
+            errorMessage += " Notification";
+        }
+
+        int days = Integer.parseInt(notifyDays);
+
+        Bill bill = new Bill(billName, dueDate, amount, recurrences,days);
+
+        mCallback.onSaveClicked(bill);
+
+        return success;
     }
 
     public void showDatePickerDialog(View v)

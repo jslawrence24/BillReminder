@@ -11,17 +11,20 @@ public class Bill
     private String key;
     private String name;
     private Date due_date;
-    private int recurrences;
     private String amount;
+    private int recurrences;
+    private int notifyDaysBefore;
 
     public Bill(){}
 
-    public Bill(String name, Date due_date, String amount)
+    public Bill(String name, Date due_date, String amount, int recurrences, int notifyDaysBefore)
     {
         this.name =  name;
         this.due_date = due_date;
         if (!amount.equals(""))
             this.amount = amount;
+        this.recurrences = recurrences;
+        this.notifyDaysBefore = notifyDaysBefore;
     }
 
     public String getKey() { return key; }
@@ -43,6 +46,10 @@ public class Bill
     public String getAmount() { return amount; }
 
     public void setAmount(String amount) { this.amount = (!amount.equals("")) ? amount : null; }
+
+    public int getNotifyDaysBefore() { return notifyDaysBefore; }
+
+    public void setNotifyDaysBefore(int notifyDaysBefore) { this.notifyDaysBefore = notifyDaysBefore; }
 
     public int getDaysToDue()
     {

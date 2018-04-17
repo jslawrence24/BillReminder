@@ -103,7 +103,15 @@ public class ViewBillDetailsFragment extends DialogFragment
         bill = SelectedBill.bill;
         toolbar.setTitle(bill.toString());
         txvDate.setText(dateFormat.format(bill.getDue_date()));
-        txvRepeat.setText("Repeats Monthly (Sample)");      //TODO vIEW DETAILS REPEAT
+        int repeat = bill.getRecurrences();
+        String repeatText;
+        if (repeat < 0 ){
+            repeatText = "Repeats Forever";
+        } else {
+            repeatText = "Repeats for " + repeat + " months";
+        }
+
+        txvRepeat.setText(repeatText);
 
         LinearLayout amntLayout = rootView.findViewById(R.id.layout_detils_amount);
 
@@ -114,7 +122,14 @@ public class ViewBillDetailsFragment extends DialogFragment
             txvAmount.setText(bill.getAmount());
         }
 
-        txvNotification.setText("1 Week Before (Sample)");      //TODO VIEW DETAILS NOTIFICATION
+        int notify = bill.getNotifyDaysBefore();
+        String notifyText;
+        if (notify == 1){
+            notifyText = " Day Before";
+        } else {
+            notifyText = " Days Before";
+        }
+        txvNotification.setText(notify + notifyText);
     }
 
     @NonNull

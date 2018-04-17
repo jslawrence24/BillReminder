@@ -14,4 +14,6 @@
     <string name="due_on">Due on</string>
     <string name="recurrence">Recurrence</string>
     <string name="delete">Delete</string>
+    <string name="repeat">Repeat</string>
+    <string name="days_before">Days Before</string>
 </resources>
