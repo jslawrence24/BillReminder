@@ -78,7 +78,7 @@ public class AddNewBillFragment extends DialogFragment
         rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
 
         Toolbar toolbar = rootView.findViewById(R.id.toolbarAdd);
-        toolbar.setTitle("Add New Bill");
+        toolbar.setTitle("");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 

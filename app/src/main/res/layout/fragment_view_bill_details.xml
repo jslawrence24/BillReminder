@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cardview_light_background">
@@ -50,44 +49,6 @@
                 android:paddingEnd="10dp"
                 android:orientation="vertical">
 
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/title"-->
-                <!--android:textAllCaps="true"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
-                <!--android:textColor="@color/colorAccent" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:background="@color/colorAccent" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/textView2"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="12dp"-->
-                <!--android:text="Bill Name Here"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium" />-->
-
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/due_on"-->
-                <!--android:textAllCaps="true"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
-                <!--android:textColor="@color/colorAccent" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:background="@color/colorAccent" />-->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -125,21 +86,6 @@
 
                 </LinearLayout>
 
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Amount"-->
-                <!--android:textAllCaps="true"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
-                <!--android:textColor="@color/colorAccent" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:background="@color/colorAccent" />-->
-
                 <LinearLayout
                     android:id="@+id/layout_detils_amount"
                     android:layout_width="match_parent"
@@ -164,56 +110,6 @@
                         android:text="120"
                         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
                 </LinearLayout>
-
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/recurrence"-->
-                <!--android:textAllCaps="true"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
-                <!--android:textColor="@color/colorAccent" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:background="@color/colorAccent" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginBottom="12dp"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<View-->
-                        <!--android:layout_width="24dp"-->
-                        <!--android:layout_height="24dp"-->
-                        <!--android:background="@drawable/ic_refresh_black_24dp" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/textView7"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginStart="4dp"-->
-                        <!--android:text="5 Times"-->
-                        <!--android:textAppearance="@android:style/TextAppearance.Material.Medium" />-->
-                <!--</LinearLayout>-->
-
-                <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Notifications"-->
-                <!--android:textAllCaps="true"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
-                <!--android:textColor="@color/colorAccent" />-->
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:layout_marginTop="4dp"-->
-                <!--android:background="@color/colorAccent" />-->
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -79,7 +79,7 @@ public class EditBillFragment extends DialogFragment
         rootView = inflater.inflate(R.layout.fragment_add_new_bill, container, false);
 
         toolbar = rootView.findViewById(R.id.toolbarAdd);
-        toolbar.setTitle("Edit Bill");
+        toolbar.setTitle("");
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -168,7 +168,6 @@ public class EditBillFragment extends DialogFragment
     private void setFields()
     {
         Bill bill = SelectedBill.bill;
-        toolbar.setTitle("Edit " + bill.toString());
 
         edtBillName.setText(bill.toString());
         edtAmount.setText(bill.getAmount());
